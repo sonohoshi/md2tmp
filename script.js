@@ -28,6 +28,13 @@ function inputToRenderTable() {
     const withSign = document.getElementById('withSign').checked;
     const description = document.getElementById('descriptionInput').value;
     const enableKeys = document.getElementById('enableKeyInput').value.split(",");
+    const buttonType = document.getElementById('buttonTypeInput').value;
+    const summonType = document.getElementById('summonTypeInput').value;
+
+    if (buttonType === 'IN_GAME' && !summonType) {
+        alert('IN_GAME 타입인 경우 소환 타입을 선택해야 합니다.');
+        return;
+    }
 
     const jsonOutput = {
         Priority: priority,
@@ -42,7 +49,12 @@ function inputToRenderTable() {
         EnableKeys: enableKeys,
         IsMainnet: isMainnet,
         WithSign: withSign,
+        ButtonType: buttonType,
     };
+    
+    if (summonType) {
+        jsonOutput.SummonType = summonType;
+    }
     runtimeList.push(jsonOutput)
 
     const bannerImage = document.getElementById('bannerImageInput').files[0]
@@ -117,6 +129,12 @@ function renderTable(serializedList) {
     tdElement = document.createElement("td")
     tdElement.appendChild(document.createTextNode("인게임 이벤트 키"))
     firstRow.appendChild(tdElement)
+    tdElement = document.createElement("td")
+    tdElement.appendChild(document.createTextNode("버튼 타입"))
+    firstRow.appendChild(tdElement)
+    tdElement = document.createElement("td")
+    tdElement.appendChild(document.createTextNode("소환 타입"))
+    firstRow.appendChild(tdElement)
     tblBody.appendChild(firstRow)
 
     serializedList.sort((a, b) => a.Priority - b.Priority);
@@ -180,6 +198,14 @@ function renderTable(serializedList) {
         const enableKeyTd = document.createElement("td")
         enableKeyTd.appendChild(document.createTextNode(`${s.EnableKeys}`))
         row.appendChild(enableKeyTd)
+
+        const buttonTypeTd = document.createElement("td")
+        buttonTypeTd.appendChild(document.createTextNode(`${s.ButtonType || ''}`))
+        row.appendChild(buttonTypeTd)
+
+        const summonTypeTd = document.createElement("td")
+        summonTypeTd.appendChild(document.createTextNode(`${s.SummonType || ''}`))
+        row.appendChild(summonTypeTd)
 
         // add the row to the end of the table body
         tblBody.appendChild(row);
@@ -300,4 +326,15 @@ document.getElementById('inputForm').addEventListener('submit', function(event){
 document.getElementById('gitForm').addEventListener('submit', function(event){
     gitCommitAndPush();
     event.preventDefault();
+});
+
+document.getElementById('buttonTypeInput').addEventListener('change', function() {
+    const summonTypeInput = document.getElementById('summonTypeInput');
+    if (this.value === 'IN_GAME') {
+        summonTypeInput.required = true;
+        summonTypeInput.style.borderColor = 'red';
+    } else {
+        summonTypeInput.required = false;
+        summonTypeInput.style.borderColor = '';
+    }
 });

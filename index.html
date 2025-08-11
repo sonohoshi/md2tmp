@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Document and Event JSON Generator</title>
     <style>
         .content {
@@ -85,6 +86,21 @@
 
             <label for="withSign">유저 서명이 포함되면 체크해주세요:</label>
             <input type="checkbox" id="withSign"><br><br>
+
+            <label for="buttonTypeInput">버튼 타입:</label>
+            <select id="buttonTypeInput" required>
+                <option value="URL">URL</option>
+                <option value="IN_GAME">IN_GAME</option>
+            </select><br><br>
+
+            <label for="summonTypeInput">소환 타입:</label>
+            <select id="summonTypeInput" required>
+                <option value="">선택 안함</option>
+                <option value="GRIMORE">GRIMORE</option>
+                <option value="ARUA">ARUA</option>
+                <option value="RUNE">RUNE</option>
+                <option value="COSTUME">COSTUME</option>
+            </select><br><br>
 
             <button type="submit" id="generateButton">위 정보를 통해 이벤트 안내 데이터 추가</button>
             <button type="reset">입력값 초기화</button>
